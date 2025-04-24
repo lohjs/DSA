@@ -1,0 +1,49 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import adt.*;
+import entity.Course;
+import java.io.*;
+
+/**
+ *
+ * @author jia shou
+ */
+public class CourseDAO {
+
+    private String fileName = "course.dat";
+
+    public void saveToFile(ListInterface<Course> course) {
+        File file = new File(fileName);
+        try {
+            ObjectOutputStream ooStream = new ObjectOutputStream(new FileOutputStream(file));
+            ooStream.writeObject(course);
+            ooStream.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("\nFile not found");
+        } catch (IOException ex) {
+            System.out.println("\nFailed to save to file");
+        }
+    }
+    
+    public ListInterface<Course> retrieveFromFile() {
+        File file = new File(fileName);
+        ListInterface<Course> course = new ArrayList<>();
+        try {
+            ObjectInputStream oiStream = new ObjectInputStream(new FileInputStream(file));
+            course = (ArrayList<Course>) (oiStream.readObject());
+            oiStream.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("\nNo such file.");
+        } catch (IOException ex) {
+            System.out.println("\nFailed to read from file.");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("\nClass not found.");
+        } finally {
+            return course;
+        }
+    }
+}
